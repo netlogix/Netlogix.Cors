@@ -1,0 +1,13 @@
+{
+    "name": "netlogix/cors",
+    "type": "typo3-flow-package",
+    "description": "Handle CORS requests, basically ported from EXT:nxcors",
+    "require": {
+        "typo3/flow": "*"
+    },
+    "autoload": {
+        "psr-0": {
+            "Netlogix\\Cors": "Classes"
+        }
+    }
+}

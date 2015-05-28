@@ -1,0 +1,25 @@
+#                                                                        #
+# Configuration for the TYPO3 Flow Framework                             #
+#                                                                        #
+# This file contains the default base configuration for the TYPO3 Flow   #
+# Framework. Don't modify this file but add configuration options to     #
+# the Settings.yaml file in the in global Configuration/ directory       #
+# instead.                                                               #
+#                                                                        #
+
+TYPO3:
+
+  Flow:
+
+    http:
+      chain:
+        preprocess:
+          chain:
+            'cors':
+              position: 'start'
+              component: 'Netlogix\Cors\Http\Component\CorsComponent'
+              componentOptions:
+                allowedMethods: ['GET']
+                allowedOrigins: []
+                allowedHeaders: []
+                allowCredentials: FALSE
