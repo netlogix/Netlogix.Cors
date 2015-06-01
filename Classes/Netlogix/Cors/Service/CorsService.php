@@ -179,5 +179,3 @@ class CorsService {
 		throw new \TYPO3\Flow\Security\Exception\AccessDeniedException('CORS request not allowed', 1337172748);
 	}
 }
-
-?>
