@@ -2,13 +2,8 @@
 namespace Netlogix\Cors\Http\Component;
 
 /*                                                                        *
- * This script belongs to the TYPO3 Flow framework.                       *
+ * This script belongs to the TYPO3 Flow package "Netlogix.Cors".         *
  *                                                                        *
- * It is free software; you can redistribute it and/or modify it under    *
- * the terms of the GNU Lesser General Public License, either version 3   *
- * of the License, or (at your option) any later version.                 *
- *                                                                        *
- * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
 
 use TYPO3\Flow\Annotations as Flow;
@@ -39,7 +34,7 @@ class CorsComponent implements \TYPO3\Flow\Http\Component\ComponentInterface {
 	 * @return void
 	 */
 	public function handle(\TYPO3\Flow\Http\Component\ComponentContext $componentContext) {
-		static $possibleMethods = array('GET', 'POST', 'OPTIONS');
+		static $possibleMethods = array('GET', 'POST', 'OPTIONS', 'DELETE', 'PUT');
 
 		$corsService = new \Netlogix\Cors\Service\CorsService();
 
