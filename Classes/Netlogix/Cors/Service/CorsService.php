@@ -133,7 +133,7 @@ class CorsService {
 			if (in_array('*', $this->allowedOrigins)) {
 				header('Access-Control-Allow-Origin: *');
 			} else {
-				header('Access-Control-Allow-Origin: ' . $_SERVER['HTTP_ORIGIN']);
+				header('Access-Control-Allow-Origin: ' . \TYPO3\Flow\Core\Bootstrap::getEnvironmentConfigurationSetting('HTTP_ORIGIN'));
 			}
 			if (!empty($this->allowedHeaders)) {
 				header('Access-Control-Allow-Headers: ' . implode(', ', $this->allowedHeaders));
@@ -147,7 +147,15 @@ class CorsService {
 	 * @return bool
 	 */
 	protected function isCorsRequest() {
-		return isset($_SERVER['HTTP_ORIGIN']) && $_SERVER['HTTP_ORIGIN'] !== NULL && $_SERVER['HTTP_ORIGIN'] !== '';
+		$origin = \TYPO3\Flow\Core\Bootstrap::getEnvironmentConfigurationSetting('HTTP_ORIGIN');
+		if (!$origin) {
+			return FALSE;
+		}
+		if (rtrim($origin, '/') == rtrim(\TYPO3\Flow\Http\Request::createFromEnvironment()->getBaseUri(), '/')) {
+			// Unfortunately Chrome always adds the "HTTP_ORIGIN" header to POST, POT and DELETE request.
+			return FALSE;
+		}
+		return TRUE;
 	}
 
 	/**
@@ -158,8 +166,8 @@ class CorsService {
 	protected function isCurrentRequestAllowed() {
 		$currentRequestIsAllowed = TRUE;
 
-		$requestMethod = $_SERVER['REQUEST_METHOD'];
-		$requestOrigin = $_SERVER['HTTP_ORIGIN'];
+		$requestMethod = \TYPO3\Flow\Core\Bootstrap::getEnvironmentConfigurationSetting('REQUEST_METHOD');
+		$requestOrigin = \TYPO3\Flow\Core\Bootstrap::getEnvironmentConfigurationSetting('HTTP_ORIGIN');
 
 		if (!in_array($requestMethod, $this->allowedMethods)) {
 			$currentRequestIsAllowed = FALSE;
