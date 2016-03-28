@@ -1,37 +1,17 @@
 <?php
 namespace Netlogix\Cors\Service;
 
-/***************************************************************
- *  Copyright notice
- *
- *  (c) 2012 Lienhart Woitok <lienhart.woitok@netlogix.de>, netlogix GmbH & Co. KG
- *
- *  All rights reserved
- *
- *  This script is part of the TYPO3 project. The TYPO3 project is
- *  free software; you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 3 of the License, or
- *  (at your option) any later version.
- *
- *  The GNU General Public License can be found at
- *  http://www.gnu.org/copyleft/gpl.html.
- *
- *  This script is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  This copyright notice MUST APPEAR in all copies of the script!
- ***************************************************************/
+/*                                                                        *
+ * This script belongs to the TYPO3 Flow package "Netlogix.Cors".         *
+ *                                                                        *
+ *                                                                        */
 
+use TYPO3\Flow\Core\Bootstrap;
+use TYPO3\Flow\Http\Request;
+use TYPO3\Flow\Security\Exception\AccessDeniedException;
 
 /**
  * Cross Origin Resource Sharing (CORS) service
- *
- * @package nxcors
- * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
- *
  */
 class CorsService {
 
@@ -133,7 +113,7 @@ class CorsService {
 			if (in_array('*', $this->allowedOrigins)) {
 				header('Access-Control-Allow-Origin: *');
 			} else {
-				header('Access-Control-Allow-Origin: ' . \TYPO3\Flow\Core\Bootstrap::getEnvironmentConfigurationSetting('HTTP_ORIGIN'));
+				header('Access-Control-Allow-Origin: ' . Bootstrap::getEnvironmentConfigurationSetting('HTTP_ORIGIN'));
 			}
 			if (!empty($this->allowedHeaders)) {
 				header('Access-Control-Allow-Headers: ' . implode(', ', $this->allowedHeaders));
@@ -141,17 +121,21 @@ class CorsService {
 		} else {
 			$this->denyRequest();
 		}
+
+		if (Bootstrap::getEnvironmentConfigurationSetting('REQUEST_METHOD') === 'OPTIONS') {
+			exit;
+		}
 	}
 
 	/**
 	 * @return bool
 	 */
 	protected function isCorsRequest() {
-		$origin = \TYPO3\Flow\Core\Bootstrap::getEnvironmentConfigurationSetting('HTTP_ORIGIN');
+		$origin = Bootstrap::getEnvironmentConfigurationSetting('HTTP_ORIGIN');
 		if (!$origin) {
 			return FALSE;
 		}
-		if (rtrim($origin, '/') == rtrim(\TYPO3\Flow\Http\Request::createFromEnvironment()->getBaseUri(), '/')) {
+		if (rtrim($origin, '/') == rtrim(Request::createFromEnvironment()->getBaseUri(), '/')) {
 			// Unfortunately Chrome always adds the "HTTP_ORIGIN" header to POST, POT and DELETE request.
 			return FALSE;
 		}
@@ -166,8 +150,8 @@ class CorsService {
 	protected function isCurrentRequestAllowed() {
 		$currentRequestIsAllowed = TRUE;
 
-		$requestMethod = \TYPO3\Flow\Core\Bootstrap::getEnvironmentConfigurationSetting('REQUEST_METHOD');
-		$requestOrigin = \TYPO3\Flow\Core\Bootstrap::getEnvironmentConfigurationSetting('HTTP_ORIGIN');
+		$requestMethod = Bootstrap::getEnvironmentConfigurationSetting('REQUEST_METHOD');
+		$requestOrigin = Bootstrap::getEnvironmentConfigurationSetting('HTTP_ORIGIN');
 
 		if (!in_array($requestMethod, $this->allowedMethods)) {
 			$currentRequestIsAllowed = FALSE;
@@ -184,6 +168,6 @@ class CorsService {
 	 * @throws \TYPO3\Flow\Http\Exception
 	 */
 	protected function denyRequest() {
-		throw new \TYPO3\Flow\Security\Exception\AccessDeniedException('CORS request not allowed', 1337172748);
+		throw new AccessDeniedException('CORS request not allowed', 1337172748);
 	}
 }
