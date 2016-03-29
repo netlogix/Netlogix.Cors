@@ -85,6 +85,15 @@ class CorsComponent implements ComponentInterface {
 			$corsService->setAllowCredentials(FALSE);
 		}
 
+		/**
+		 * maxAge
+		 */
+		if (isset($this->options['maxAge']) && $this->options['maxAge']) {
+			$corsService->setMaxAge(intval($this->options['maxAge']));
+		} else {
+			$corsService->setMaxAge(600);
+		}
+
 		$corsService->sendHeaders();
 
 	}

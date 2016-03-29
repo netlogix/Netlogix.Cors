@@ -16,6 +16,11 @@ use TYPO3\Flow\Security\Exception\AccessDeniedException;
 class CorsService {
 
 	/**
+	 * @var int
+	 */
+	protected $maxAge = 0;
+
+	/**
 	 * Allowed origin domains
 	 *
 	 * @var array
@@ -42,6 +47,22 @@ class CorsService {
 	 * @var bool
 	 */
 	protected $allowCredentials = FALSE;
+
+	/**
+	 * @return int
+	 */
+	public function getMaxAge()
+	{
+		return $this->maxAge;
+	}
+
+	/**
+	 * @param int $maxAge
+	 */
+	public function setMaxAge($maxAge)
+	{
+		$this->maxAge = $maxAge;
+	}
 
 	/**
 	 * @param boolean $allowCredentials
@@ -108,6 +129,7 @@ class CorsService {
 		}
 
 		if ($this->isCurrentRequestAllowed()) {
+			header('Access-Control-Max-Age: ' . $this->maxAge);
 			header('Access-Control-Allow-Methods: ' . implode(', ', $this->allowedMethods));
 			header('Access-Control-Allow-Credentials: ' . ($this->allowCredentials ? 'true' : 'false'));
 			if (in_array('*', $this->allowedOrigins)) {
