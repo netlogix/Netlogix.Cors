@@ -6,12 +6,16 @@ namespace Netlogix\Cors\Http\Component;
  *                                                                        *
  *                                                                        */
 
+use Netlogix\Cors\Service\CorsService;
 use TYPO3\Flow\Annotations as Flow;
+use TYPO3\Flow\Http\Component\ComponentContext;
+use TYPO3\Flow\Http\Component\ComponentInterface;
+use TYPO3\Flow\Utility\Arrays;
 
 /**
  * HTTP component sending CORS (Access-Control-Allow-*) headers.
  */
-class CorsComponent implements \TYPO3\Flow\Http\Component\ComponentInterface {
+class CorsComponent implements ComponentInterface {
 
 	/**
 	 * @var array
@@ -30,13 +34,13 @@ class CorsComponent implements \TYPO3\Flow\Http\Component\ComponentInterface {
 	 * In case of CORS requests, either the allow headers are sent or the
 	 * AccessDeniedException is thrown.
 	 *
-	 * @param \TYPO3\Flow\Http\Component\ComponentContext $componentContext
+	 * @param ComponentContext $componentContext
 	 * @return void
 	 */
-	public function handle(\TYPO3\Flow\Http\Component\ComponentContext $componentContext) {
+	public function handle(ComponentContext $componentContext) {
 		static $possibleMethods = array('GET', 'POST', 'OPTIONS', 'DELETE', 'PUT');
 
-		$corsService = new \Netlogix\Cors\Service\CorsService();
+		$corsService = new CorsService();
 
 		/**
 		 * allowedMethods
@@ -57,7 +61,7 @@ class CorsComponent implements \TYPO3\Flow\Http\Component\ComponentInterface {
 		if (isset($this->options['allowedOrigins']) && is_array($this->options['allowedOrigins'])) {
 			$configuredOrigins = array_values($this->options['allowedOrigins']);
 		} elseif (isset($this->options['allowedOrigins']) && is_string($this->options['allowedOrigins'])) {
-			$configuredOrigins = \TYPO3\Flow\Utility\Arrays::trimExplode(',', $this->options['allowedOrigins']);
+			$configuredOrigins = Arrays::trimExplode(',', $this->options['allowedOrigins']);
 		}
 		$corsService->setAllowedOrigins($configuredOrigins);
 
@@ -68,7 +72,7 @@ class CorsComponent implements \TYPO3\Flow\Http\Component\ComponentInterface {
 		if (isset($this->options['allowedHeaders']) && is_array($this->options['allowedHeaders'])) {
 			$configuredHeaders = array_values($this->options['allowedHeaders']);
 		} elseif (isset($this->options['allowedHeaders']) && is_string($this->options['allowedHeaders'])) {
-			$configuredHeaders = \TYPO3\Flow\Utility\Arrays::trimExplode(',', $this->options['allowedHeaders']);
+			$configuredHeaders = Arrays::trimExplode(',', $this->options['allowedHeaders']);
 		}
 		$corsService->setAllowedHeaders($configuredHeaders);
 
@@ -79,6 +83,15 @@ class CorsComponent implements \TYPO3\Flow\Http\Component\ComponentInterface {
 			$corsService->setAllowCredentials(TRUE);
 		} else {
 			$corsService->setAllowCredentials(FALSE);
+		}
+
+		/**
+		 * maxAge
+		 */
+		if (isset($this->options['maxAge']) && $this->options['maxAge']) {
+			$corsService->setMaxAge(intval($this->options['maxAge']));
+		} else {
+			$corsService->setMaxAge(600);
 		}
 
 		$corsService->sendHeaders();
