@@ -122,7 +122,7 @@ class CorsService {
 			$this->denyRequest();
 		}
 
-		if (Bootstrap::getEnvironmentConfigurationSetting('REQUEST_METHOD') === 'OPTIONS') {
+		if (Bootstrap::getEnvironmentConfigurationSetting('REQUEST_METHOD') === 'OPTIONS' && (Bootstrap::getEnvironmentConfigurationSetting('HTTP_ACCESS_CONTROL_REQUEST_HEADERS') || Bootstrap::getEnvironmentConfigurationSetting('HTTP_ACCESS_CONTROL_REQUEST_METHOD'))) {
 			exit;
 		}
 	}
