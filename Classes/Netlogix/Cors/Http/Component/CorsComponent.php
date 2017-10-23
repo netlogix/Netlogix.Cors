@@ -10,7 +10,7 @@ use Netlogix\Cors\Service\CorsService;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Http\Component\ComponentContext;
 use Neos\Flow\Http\Component\ComponentInterface;
-use Neos\Flow\Utility\Arrays;
+use Neos\Utility\Arrays;
 
 /**
  * HTTP component sending CORS (Access-Control-Allow-*) headers.
