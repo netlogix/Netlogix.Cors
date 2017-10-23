@@ -7,10 +7,10 @@ namespace Netlogix\Cors\Http\Component;
  *                                                                        */
 
 use Netlogix\Cors\Service\CorsService;
-use TYPO3\Flow\Annotations as Flow;
-use TYPO3\Flow\Http\Component\ComponentContext;
-use TYPO3\Flow\Http\Component\ComponentInterface;
-use TYPO3\Flow\Utility\Arrays;
+use Neos\Flow\Annotations as Flow;
+use Neos\Flow\Http\Component\ComponentContext;
+use Neos\Flow\Http\Component\ComponentInterface;
+use Neos\Flow\Utility\Arrays;
 
 /**
  * HTTP component sending CORS (Access-Control-Allow-*) headers.

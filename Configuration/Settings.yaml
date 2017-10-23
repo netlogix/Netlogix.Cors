@@ -7,19 +7,18 @@
 # instead.                                                               #
 #                                                                        #
 
-TYPO3:
-
+Neos:
   Flow:
-
     http:
       chain:
         preprocess:
           chain:
-            'cors':
-              position: 'start'
-              component: 'Netlogix\Cors\Http\Component\CorsComponent'
+            cors:
+              position: start
+              component: Netlogix\Cors\Http\Component\CorsComponent
               componentOptions:
-                allowedMethods: ['GET']
-                allowedOrigins: []
-                allowedHeaders: []
-                allowCredentials: FALSE
+                allowedMethods:
+                  - GET
+                allowedOrigins: {  }
+                allowedHeaders: {  }
+                allowCredentials: false
