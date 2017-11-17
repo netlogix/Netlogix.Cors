@@ -6,9 +6,9 @@ namespace Netlogix\Cors\Service;
  *                                                                        *
  *                                                                        */
 
-use TYPO3\Flow\Core\Bootstrap;
-use TYPO3\Flow\Http\Request;
-use TYPO3\Flow\Security\Exception\AccessDeniedException;
+use Neos\Flow\Core\Bootstrap;
+use Neos\Flow\Http\Request;
+use Neos\Flow\Security\Exception\AccessDeniedException;
 
 /**
  * Cross Origin Resource Sharing (CORS) service
@@ -203,7 +203,7 @@ class CorsService
     /**
      * Deny request and send forbidden header
      *
-     * @throws \TYPO3\Flow\Http\Exception
+     * @throws \Neos\Flow\Http\Exception
      */
     protected function denyRequest()
     {
