@@ -1,14 +1,23 @@
 {
     "name": "netlogix/cors",
     "type": "neos-package",
-    "description": "Handle CORS requests, basically ported from EXT:nxcors",
+    "homepage": "http://websolutions.netlogix.de/",
+    "license": ["MIT"],
     "require": {
-        "neos/flow": "~4.0.0"
+        "neos/flow": "*"
     },
     "autoload": {
         "psr-0": {
             "Netlogix\\Cors": "Classes"
         }
+    },
+    "autoload-dev": {
+        "psr-0": {
+            "Netlogix\\Cors\\Tests": "Tests"
+        }
+    },
+    "replace": {
+        "netlogix/cors": "self.version"
     },
     "extra": {
         "applied-flow-migrations": [
