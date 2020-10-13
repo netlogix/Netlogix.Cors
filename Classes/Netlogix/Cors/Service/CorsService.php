@@ -116,9 +116,11 @@ class CorsService
     /**
      * @param array $allowedOrigins
      */
-    public function setAllowedOrigins($allowedOrigins)
+    public function setAllowedOrigins(array $allowedOrigins)
     {
-        $this->allowedOrigins = $allowedOrigins;
+        $this->allowedOrigins = array_map(function(string $allowedOrigin) {
+            return rtrim($allowedOrigin, '/');
+        }, $allowedOrigins);
     }
 
     /**
@@ -186,7 +188,7 @@ class CorsService
         $currentRequestIsAllowed = true;
 
         $requestMethod = Bootstrap::getEnvironmentConfigurationSetting('REQUEST_METHOD');
-        $requestOrigin = Bootstrap::getEnvironmentConfigurationSetting('HTTP_ORIGIN');
+        $requestOrigin = rtrim(Bootstrap::getEnvironmentConfigurationSetting('HTTP_ORIGIN') ?? '', '/');
 
         if (!in_array($requestMethod, $this->allowedMethods)) {
             $currentRequestIsAllowed = false;
