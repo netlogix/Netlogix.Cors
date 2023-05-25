@@ -4,7 +4,7 @@
     "homepage": "http://websolutions.netlogix.de/",
     "license": ["MIT"],
     "require": {
-        "neos/flow": "*"
+        "neos/flow": "^8.3"
     },
     "autoload": {
         "psr-0": {
